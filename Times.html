@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Shalat Jakarta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #667eea;
+            background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            padding: 2vh 2vw;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 2vw;
+            padding: 2.5vh 2.5vw;
+            box-shadow: 0 2vh 6vh rgba(0,0,0,0.4);
+            width: 96vw;
+            height: 96vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .header-section {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            border-bottom: 0.3vh solid #e9ecef;
+            margin-bottom: 2vh;
+            padding-bottom: 1.5vh;
+        }
+
+        .time-display {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0.2vw 0.2vw 0.5vw rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .date-display {
+            text-align: center;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .prayer-section {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            min-height: 0;
+        }
+
+        .normal-prayers {
+            display: -ms-grid;
+            display: grid;
+            gap: 1.5vw;
+        }
+
+        .next-prayer-container {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+        }
+
+        .prayer-item {
+            text-align: center;
+            border-radius: 1.5vw;
+            background: #f8f9fa;
+            -webkit-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 2vh 1.5vw;
+        }
+
+        .prayer-item.passed {
+            opacity: 0.4;
+            -webkit-transform: scale(0.95);
+            transform: scale(0.95);
+        }
+
+        .prayer-item.active {
+            background: #667eea;
+            background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-transform: scale(1.02);
+            transform: scale(1.02);
+            box-shadow: 0 1vh 2vh rgba(102, 126, 234, 0.4);
+        }
+
+        .prayer-item.active .prayer-name,
+        .prayer-item.active .prayer-time {
+            color: white;
+        }
+
+        .prayer-item.next {
+            width: 100%;
+            height: 100%;
+            background: #667eea;
+            background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2vh 4vh rgba(102, 126, 234, 0.6);
+            border: 0.4vw solid rgba(255,255,255,0.3);
+        }
+
+        .prayer-item.next .prayer-name,
+        .prayer-item.next .prayer-time {
+            color: white;
+        }
+
+        .prayer-item.next:before {
+            content: 'WAKTU BERIKUTNYA';
+            display: block;
+            color: rgba(255,255,255,0.95);
+            font-weight: bold;
+            letter-spacing: 0.3vw;
+            text-transform: uppercase;
+        }
+
+        .prayer-name {
+            font-weight: bold;
+            color: #495057;
+            white-space: nowrap;
+        }
+
+        .prayer-time {
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            padding: 5vh;
+        }
+
+        /* ==================== LANDSCAPE MODE ==================== */
+        @media (orientation: landscape) {
+            .header-section {
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 25%;
+                flex: 0 0 25%;
+            }
+
+            .time-display {
+                font-size: 8vw;
+                margin-bottom: 1vh;
+            }
+
+            .date-display {
+                font-size: 1.5vw;
+            }
+
+            .prayer-section {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                gap: 1.5vw;
+            }
+
+            .normal-prayers {
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 48%;
+                flex: 0 0 48%;
+                -ms-grid-columns: 1fr 1.5vw 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                -ms-grid-rows: 1fr 1.5vw 1fr;
+                grid-template-rows: repeat(2, 1fr);
+            }
+
+            .next-prayer-container {
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 48%;
+                flex: 0 0 48%;
+            }
+
+            .prayer-item.next:before {
+                font-size: 1.8vw;
+                margin-bottom: 2vh;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 5vw;
+                margin-bottom: 3vh;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 10vw;
+            }
+
+            .prayer-name {
+                font-size: 2.2vw;
+                margin-bottom: 1.5vh;
+            }
+
+            .prayer-time {
+                font-size: 3.8vw;
+            }
+
+            .loading {
+                font-size: 3vw;
+            }
+        }
+
+        /* Landscape 1280x720 */
+        @media (max-width: 1366px) and (orientation: landscape) {
+            .time-display {
+                font-size: 9vw;
+            }
+
+            .date-display {
+                font-size: 1.8vw;
+            }
+
+            .prayer-name {
+                font-size: 2.5vw;
+            }
+
+            .prayer-time {
+                font-size: 4.2vw;
+            }
+
+            .prayer-item.next:before {
+                font-size: 2vw;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 5.5vw;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 11vw;
+            }
+        }
+
+        /* Landscape 1920x1080 */
+        @media (min-width: 1920px) and (orientation: landscape) {
+            .time-display {
+                font-size: 7vw;
+            }
+
+            .date-display {
+                font-size: 1.3vw;
+            }
+
+            .prayer-name {
+                font-size: 2vw;
+            }
+
+            .prayer-time {
+                font-size: 3.5vw;
+            }
+
+            .prayer-item.next:before {
+                font-size: 1.5vw;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 4.5vw;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 9vw;
+            }
+        }
+
+        /* ==================== PORTRAIT MODE ==================== */
+        @media (orientation: portrait) {
+            .card {
+                padding: 3vh 4vw;
+                border-radius: 3vw;
+            }
+
+            .header-section {
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 20%;
+                flex: 0 0 20%;
+                border-bottom: 0.4vh solid #e9ecef;
+            }
+
+            .time-display {
+                font-size: 16vw;
+                margin-bottom: 1.5vh;
+            }
+
+            .date-display {
+                font-size: 3.5vw;
+            }
+
+            .prayer-section {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                gap: 2vh;
+            }
+
+            .next-prayer-container {
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 45%;
+                flex: 0 0 45%;
+            }
+
+            .normal-prayers {
+                -webkit-box-flex: 1;
+                -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+                -ms-grid-columns: 1fr 2vw 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                -ms-grid-rows: 1fr 2vh 1fr;
+                grid-template-rows: repeat(2, 1fr);
+                gap: 2vh 2vw;
+            }
+
+            .prayer-item {
+                padding: 2vh 2vw;
+                border-radius: 2vw;
+            }
+
+            .prayer-item.next {
+                padding: 3vh 4vw;
+                border: 0.6vw solid rgba(255,255,255,0.3);
+            }
+
+            .prayer-item.next:before {
+                font-size: 4vw;
+                margin-bottom: 2vh;
+                letter-spacing: 0.5vw;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 10vw;
+                margin-bottom: 3vh;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 18vw;
+            }
+
+            .prayer-name {
+                font-size: 5vw;
+                margin-bottom: 1.5vh;
+            }
+
+            .prayer-time {
+                font-size: 8vw;
+            }
+
+            .loading {
+                font-size: 5vw;
+            }
+        }
+
+        /* Portrait Tablet 768px+ */
+        @media (min-width: 768px) and (orientation: portrait) {
+            .time-display {
+                font-size: 14vw;
+            }
+
+            .date-display {
+                font-size: 3vw;
+            }
+
+            .prayer-item.next:before {
+                font-size: 3.5vw;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 9vw;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 16vw;
+            }
+
+            .prayer-name {
+                font-size: 4.5vw;
+            }
+
+            .prayer-time {
+                font-size: 7vw;
+            }
+        }
+
+        /* Portrait Large Tablet 1024px+ */
+        @media (min-width: 1024px) and (orientation: portrait) {
+            .time-display {
+                font-size: 12vw;
+            }
+
+            .date-display {
+                font-size: 2.5vw;
+            }
+
+            .prayer-item.next:before {
+                font-size: 3vw;
+            }
+
+            .prayer-item.next .prayer-name {
+                font-size: 8vw;
+            }
+
+            .prayer-item.next .prayer-time {
+                font-size: 14vw;
+            }
+
+            .prayer-name {
+                font-size: 4vw;
+            }
+
+            .prayer-time {
+                font-size: 6.5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header-section">
+            <div class="time-display" id="currentTime">--:--:--</div>
+            <div class="date-display" id="dateDisplay">Loading...</div>
+        </div>
+
+        <div class="prayer-section">
+            <div class="next-prayer-container" id="nextPrayerContainer">
+                <div class="loading">Memuat...</div>
+            </div>
+            <div class="normal-prayers" id="normalPrayers">
+                <div class="loading">Memuat...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var prayerTimesData = null;
+
+        function padLeft(str, length, char) {
+            str = String(str);
+            while (str.length < length) {
+                str = char + str;
+            }
+            return str;
+        }
+
+        function updateCurrentTime() {
+            var now = new Date();
+            var hours = padLeft(now.getHours(), 2, '0');
+            var minutes = padLeft(now.getMinutes(), 2, '0');
+            var seconds = padLeft(now.getSeconds(), 2, '0');
+            document.getElementById('currentTime').textContent = hours + ':' + minutes + ':' + seconds;
+
+            if (prayerTimesData) {
+                displayPrayerLayout();
+            }
+        }
+
+        setInterval(updateCurrentTime, 1000);
+        updateCurrentTime();
+
+        function getPrayerTimes() {
+            var xhr = new XMLHttpRequest();
+            var url = 'https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11';
+            
+            xhr.open('GET', url, true);
+            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.code === 200) {
+                            prayerTimesData = data.data;
+                            var date = data.data.date;
+                            document.getElementById('dateDisplay').textContent = date.readable + ' • ' + date.hijri.day + ' ' + date.hijri.month.en + ' ' + date.hijri.year + ' H';
+                            displayPrayerLayout();
+                        }
+                    } catch (e) {
+                        document.getElementById('normalPrayers').innerHTML = '<div class="loading">Error</div>';
+                    }
+                }
+            };
+            
+            xhr.send();
+        }
+
+        function displayPrayerLayout() {
+            var now = new Date();
+            var currentMinutes = now.getHours() * 60 + now.getMinutes();
+            var timings = prayerTimesData.timings;
+
+            var prayers = [
+                { name: 'Subuh', time: timings.Fajr, key: 'Fajr' },
+                { name: 'Dzuhur', time: timings.Dhuhr, key: 'Dhuhr' },
+                { name: 'Ashar', time: timings.Asr, key: 'Asr' },
+                { name: 'Maghrib', time: timings.Maghrib, key: 'Maghrib' },
+                { name: 'Isya', time: timings.Isha, key: 'Isha' }
+            ];
+
+            var nextPrayerIndex = -1;
+
+            for (var i = 0; i < prayers.length; i++) {
+                var parts = prayers[i].time.split(':');
+                var prayerMinutes = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+                
+                if (currentMinutes < prayerMinutes) {
+                    nextPrayerIndex = i;
+                    break;
+                }
+            }
+
+            if (nextPrayerIndex === -1) {
+                nextPrayerIndex = 0;
+            }
+
+            var normalHtml = '';
+            var nextHtml = '';
+
+            for (var i = 0; i < prayers.length; i++) {
+                var prayer = prayers[i];
+                var parts = prayer.time.split(':');
+                var prayerMinutes = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+                
+                var className = 'prayer-item';
+                
+                if (i === nextPrayerIndex) {
+                    className = 'prayer-item next';
+                    nextHtml = '<div class="' + className + '" id="prayer-' + prayer.key + '">' +
+                        '<div class="prayer-name">' + prayer.name + '</div>' +
+                        '<div class="prayer-time">' + prayer.time + '</div>' +
+                        '</div>';
+                } else {
+                    if (currentMinutes >= prayerMinutes) {
+                        if (i < prayers.length - 1) {
+                            var nextParts = prayers[i + 1].time.split(':');
+                            var nextMinutes = parseInt(nextParts[0], 10) * 60 + parseInt(nextParts[1], 10);
+                            
+                            if (currentMinutes < nextMinutes) {
+                                className = 'prayer-item active';
+                            } else {
+                                className = 'prayer-item passed';
+                            }
+                        } else {
+                            if (nextPrayerIndex === 0) {
+                                className = 'prayer-item active';
+                            } else {
+                                className = 'prayer-item passed';
+                            }
+                        }
+                    }
+                    
+                    normalHtml += '<div class="' + className + '" id="prayer-' + prayer.key + '">' +
+                        '<div class="prayer-name">' + prayer.name + '</div>' +
+                        '<div class="prayer-time">' + prayer.time + '</div>' +
+                        '</div>';
+                }
+            }
+
+            document.getElementById('nextPrayerContainer').innerHTML = nextHtml;
+            document.getElementById('normalPrayers').innerHTML = normalHtml;
+        }
+
+        setInterval(function() {
+            getPrayerTimes();
+        }, 3600000);
+
+        getPrayerTimes();
+    </script>
+</body>
+</html>
