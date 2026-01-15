@@ -1,17 +1,17 @@
 var prayerTimesData = null;
 
-// Data fallback jika API gagal (Jakarta)
+// Data fallback kosong jika API gagal
 var fallbackData = {
     timings: {
-        Fajr: '04:37',
-        Dhuhr: '11:57',
-        Asr: '15:17',
-        Maghrib: '18:02',
-        Isha: '19:12'
+        Fajr: '--:--',
+        Dhuhr: '--:--',
+        Asr: '--:--',
+        Maghrib: '--:--',
+        Isha: '--:--'
     },
     date: {
-        readable: '15 Jan 2025',
-        hijri: { day: '15', month: { en: 'Rajab' }, year: '1446' }
+        readable: '-',
+        hijri: { day: '-', month: { en: '-' }, year: '-' }
     }
 };
 
@@ -68,7 +68,7 @@ function getPrayerTimes() {
     }
 
     var xhr = new XMLHttpRequest();
-    var url = 'http://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11';
+    var url = 'https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11';
 
     xhr.open('GET', url, true);
     xhr.timeout = 10000; // 10 detik timeout
