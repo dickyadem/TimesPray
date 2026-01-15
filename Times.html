@@ -8,36 +8,42 @@
 </head>
 <body>
     <div class="card">
+        <!-- Header: Jam dan Tanggal -->
         <div class="header-section">
             <div class="time-display" id="currentTime">--:--:--</div>
             <div class="date-display" id="dateDisplay">Loading...</div>
         </div>
 
-        <div class="prayer-times-section" id="prayerTimes">
-            <div class="prayer-box" id="fajrBox">
+        <!-- Kotak Besar: Waktu Shalat Aktif/Berikutnya -->
+        <div class="highlight-section">
+            <div class="highlight-box" id="highlightBox">
+                <div class="highlight-status" id="highlightStatus">BERIKUTNYA</div>
+                <div class="highlight-name" id="highlightName">--</div>
+                <div class="highlight-time" id="highlightTime">--:--</div>
+            </div>
+        </div>
+
+        <!-- Kotak Kecil: Semua Waktu Shalat -->
+        <div class="prayer-list-section">
+            <div class="prayer-item" id="fajrBox">
                 <div class="prayer-name">Subuh</div>
                 <div class="prayer-time" id="fajrTime">--:--</div>
-                <div class="prayer-status"></div>
             </div>
-            <div class="prayer-box" id="dhuhrBox">
+            <div class="prayer-item" id="dhuhrBox">
                 <div class="prayer-name">Dzuhur</div>
                 <div class="prayer-time" id="dhuhrTime">--:--</div>
-                <div class="prayer-status"></div>
             </div>
-            <div class="prayer-box" id="asrBox">
+            <div class="prayer-item" id="asrBox">
                 <div class="prayer-name">Ashar</div>
                 <div class="prayer-time" id="asrTime">--:--</div>
-                <div class="prayer-status"></div>
             </div>
-            <div class="prayer-box" id="maghribBox">
+            <div class="prayer-item" id="maghribBox">
                 <div class="prayer-name">Maghrib</div>
                 <div class="prayer-time" id="maghribTime">--:--</div>
-                <div class="prayer-status"></div>
             </div>
-            <div class="prayer-box" id="ishaBox">
+            <div class="prayer-item" id="ishaBox">
                 <div class="prayer-name">Isya</div>
                 <div class="prayer-time" id="ishaTime">--:--</div>
-                <div class="prayer-status"></div>
             </div>
         </div>
     </div>

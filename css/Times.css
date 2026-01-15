@@ -1,6 +1,8 @@
 * {
     margin: 0;
     padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -16,416 +18,217 @@ body {
     background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background: -moz-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    padding: 3vh 3vw;
+    padding: 2vh 2vw;
 }
 
 .card {
+    background: #ffffff;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 3vw;
-    padding: 4vh 4vw;
-    box-shadow: 0 3vh 8vh rgba(0,0,0,0.4);
-    width: 94vw;
-    height: 94vh;
-    max-width: 94vw;
-    max-height: 94vh;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -ms-flex-direction: column;
-    -webkit-flex-direction: column;
-    flex-direction: column;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    padding: 2% 3%;
+    -webkit-box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    width: 96%;
+    height: 96vh;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
-/* Header - 30% */
+/* ==================== HEADER SECTION ==================== */
 .header-section {
-    -webkit-box-flex: 0;
-    -moz-box-flex: 0;
-    -webkit-flex: 0 0 30%;
-    -ms-flex: 0 0 30%;
-    flex: 0 0 30%;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -ms-flex-direction: column;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    border-bottom: 0.5vh solid #e9ecef;
-    padding-bottom: 3vh;
-    margin-bottom: 3vh;
+    text-align: center;
+    height: 18%;
+    padding-bottom: 1%;
+    border-bottom: 3px solid #e9ecef;
 }
 
 .time-display {
-    text-align: center;
-    font-size: 10vw;
+    font-size: 7vw;
     color: #667eea;
     font-weight: bold;
-    font-family: 'Courier New', monospace;
-    text-shadow: 0.3vw 0.3vw 0.6vw rgba(0,0,0,0.1);
+    font-family: 'Courier New', Courier, monospace;
     line-height: 1.1;
-    margin-bottom: 2vh;
 }
 
 .date-display {
+    font-size: 1.5vw;
+    color: #666666;
+    line-height: 1.3;
+    margin-top: 0.5%;
+}
+
+/* ==================== HIGHLIGHT SECTION (Kotak Besar) ==================== */
+.highlight-section {
     text-align: center;
-    font-size: 2vw;
-    color: #666;
-    line-height: 1.5;
+    height: 45%;
+    padding: 1.5% 0;
 }
 
-/* Prayer Times Grid - 65% */
-.prayer-times-section {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-align-content: flex-start;
-    -ms-flex-line-pack: start;
-    align-content: flex-start;
-    gap: 2vh 2vw;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.prayer-box {
-    -webkit-box-flex: 0;
-    -moz-box-flex: 0;
-    -webkit-flex: 0 0 calc(25% - 1.5vw);
-    -ms-flex: 0 0 calc(25% - 1.5vw);
-    flex: 0 0 calc(25% - 1.5vw);
-    width: calc(25% - 1.5vw);
-    text-align: center;
-    border-radius: 2vw;
-    background: #f8f9fa;
-    box-shadow: 0 1vh 2vh rgba(0,0,0,0.1);
-    border: 0.3vw solid #e9ecef;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -ms-flex-direction: column;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-    padding: 2vh 1.5vw;
-    min-height: 12vh;
-    -webkit-transition: all 0.4s ease;
-    -moz-transition: all 0.4s ease;
-    -ms-transition: all 0.4s ease;
-    -o-transition: all 0.4s ease;
-    transition: all 0.4s ease;
-    -webkit-box-ordinal-group: 3;
-    -moz-box-ordinal-group: 3;
-    -ms-flex-order: 2;
-    -webkit-order: 2;
-    order: 2;
-}
-
-.prayer-box.active {
-    -webkit-box-flex: 0;
-    -moz-box-flex: 0;
-    -webkit-flex: 0 0 70%;
-    -ms-flex: 0 0 70%;
-    flex: 0 0 70%;
-    width: 70%;
-    background: #667eea;
-    background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background: -moz-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4vh 8vh rgba(102, 126, 234, 0.7);
-    border-color: rgba(255,255,255,0.6);
-    border-width: 0.5vw;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    min-height: 35vh;
-    padding: 4vh 4vw;
-    -webkit-box-ordinal-group: 2;
-    -moz-box-ordinal-group: 2;
-    -ms-flex-order: 1;
-    -webkit-order: 1;
-    order: 1;
-    z-index: 10;
-}
-
-.prayer-box.next {
-    -webkit-box-flex: 0;
-    -moz-box-flex: 0;
-    -webkit-flex: 0 0 70%;
-    -ms-flex: 0 0 70%;
-    flex: 0 0 70%;
-    width: 70%;
+.highlight-box {
+    display: inline-block;
+    width: 60%;
+    height: 100%;
+    padding: 1.5% 3%;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
     background: #48c774;
     background: -webkit-linear-gradient(135deg, #48c774 0%, #38a169 100%);
     background: -moz-linear-gradient(135deg, #48c774 0%, #38a169 100%);
     background: linear-gradient(135deg, #48c774 0%, #38a169 100%);
-    box-shadow: 0 4vh 8vh rgba(72, 199, 116, 0.7);
-    border-color: rgba(255,255,255,0.6);
-    border-width: 0.5vw;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    min-height: 35vh;
-    padding: 4vh 4vw;
-    -webkit-box-ordinal-group: 2;
-    -moz-box-ordinal-group: 2;
-    -ms-flex-order: 1;
-    -webkit-order: 1;
-    order: 1;
-    z-index: 10;
+    -webkit-box-shadow: 0 15px 40px rgba(72, 199, 116, 0.5);
+    -moz-box-shadow: 0 15px 40px rgba(72, 199, 116, 0.5);
+    box-shadow: 0 15px 40px rgba(72, 199, 116, 0.5);
+    border: 3px solid rgba(255,255,255,0.3);
 }
 
-.prayer-name {
-    font-size: 2.5vw;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1vh;
-    line-height: 1.1;
+.highlight-box.active {
+    background: #667eea;
+    background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: -moz-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+    -moz-box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
 }
 
-.prayer-time {
-    font-size: 3.5vw;
-    font-weight: bold;
-    color: #667eea;
-    font-family: 'Courier New', monospace;
-    line-height: 1;
-}
-
-.prayer-box.active .prayer-name,
-.prayer-box.next .prayer-name {
-    color: white;
-    font-size: 6vw;
-    margin-bottom: 3vh;
-}
-
-.prayer-box.active .prayer-time,
-.prayer-box.next .prayer-time {
-    color: white;
-    text-shadow: 0.3vw 0.3vw 0.6vw rgba(0,0,0,0.3);
-    font-size: 12vw;
-}
-
-.prayer-status {
-    font-size: 1.5vw;
-    color: rgba(255,255,255,0.95);
+.highlight-status {
+    font-size: 2vw;
+    color: #ffffff;
+    color: rgba(255,255,255,0.9);
     font-weight: bold;
     text-transform: uppercase;
-    margin-top: 1vh;
-    letter-spacing: 0.2vw;
+    letter-spacing: 3px;
+    margin-bottom: 1%;
+}
+
+.highlight-name {
+    font-size: 6vw;
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 1.1;
+    margin-bottom: 1%;
+}
+
+.highlight-time {
+    font-size: 12vw;
+    color: #ffffff;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+/* ==================== PRAYER LIST SECTION (Kotak Kecil) ==================== */
+.prayer-list-section {
+    text-align: center;
+    height: 32%;
+    padding-top: 1.5%;
+}
+
+.prayer-item {
+    display: inline-block;
+    vertical-align: top;
+    width: 22%;
+    margin: 0 1%;
+    padding: 1.5% 1%;
+    text-align: center;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    background: #f8f9fa;
+    border: 3px solid #e9ecef;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/* Hide active/next item in small boxes */
+.prayer-item.active,
+.prayer-item.next {
     display: none;
 }
 
-.prayer-box.active .prayer-status,
-.prayer-box.next .prayer-status {
-    display: block;
+.prayer-name {
+    font-size: 1.8vw;
+    font-weight: bold;
+    color: #333333;
+    line-height: 1.2;
+    margin-bottom: 5px;
 }
 
-.loading {
-    text-align: center;
-    font-size: 4vw;
-    color: #666;
-    padding: 5vh;
+.prayer-time {
+    font-size: 2.8vw;
+    font-weight: bold;
+    color: #667eea;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.2;
 }
 
-/* Scrollbar styling for old browsers */
-.prayer-times-section::-webkit-scrollbar {
-    width: 0.8vw;
-}
-
-.prayer-times-section::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 1vw;
-}
-
-.prayer-times-section::-webkit-scrollbar-thumb {
-    background: #667eea;
-    border-radius: 1vw;
-}
-
-.prayer-times-section::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
-}
-
-/* ==================== LANDSCAPE MODE ==================== */
-@media (orientation: landscape) {
-    body {
-        padding: 2vh 2vw;
-    }
-
-    .card {
-        width: 96vw;
-        height: 96vh;
-        padding: 3vh 3vw;
-    }
-
-    .header-section {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 25%;
-        -ms-flex: 0 0 25%;
-        flex: 0 0 25%;
-        padding-bottom: 2vh;
-        margin-bottom: 2vh;
-    }
-
+/* ==================== LARGE SCREENS (1200px+) ==================== */
+@media screen and (min-width: 1200px) {
     .time-display {
-        font-size: 7vw;
-        margin-bottom: 1vh;
+        font-size: 6vw;
     }
 
     .date-display {
-        font-size: 1.4vw;
+        font-size: 1.3vw;
     }
 
-    .prayer-box {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 calc(25% - 1.5vw);
-        -ms-flex: 0 0 calc(25% - 1.5vw);
-        flex: 0 0 calc(25% - 1.5vw);
-        width: calc(25% - 1.5vw);
-        min-height: 12vh;
+    .highlight-box {
+        width: 50%;
     }
 
-    .prayer-box.active,
-    .prayer-box.next {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 80%;
-        -ms-flex: 0 0 80%;
-        flex: 0 0 80%;
-        width: 80%;
-        min-height: 30vh;
+    .highlight-status {
+        font-size: 1.5vw;
+    }
+
+    .highlight-name {
+        font-size: 4vw;
+    }
+
+    .highlight-time {
+        font-size: 8vw;
+    }
+
+    .prayer-item {
+        width: 20%;
+        margin: 0 1.2%;
     }
 
     .prayer-name {
-        font-size: 1.8vw;
+        font-size: 1.5vw;
     }
 
     .prayer-time {
-        font-size: 2.8vw;
+        font-size: 2.5vw;
+    }
+}
+
+/* ==================== MEDIUM SCREENS (800px - 1199px) ==================== */
+@media screen and (min-width: 800px) and (max-width: 1199px) {
+    .time-display {
+        font-size: 6vw;
     }
 
-    .prayer-status {
-        font-size: 1.2vw;
+    .highlight-box {
+        width: 55%;
     }
 
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
+    .highlight-name {
         font-size: 4.5vw;
     }
 
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
+    .highlight-time {
         font-size: 9vw;
     }
-}
 
-/* Landscape Small (1280x720) */
-@media (max-width: 1366px) and (orientation: landscape) {
-    .time-display {
-        font-size: 8vw;
-    }
-
-    .date-display {
-        font-size: 1.6vw;
-    }
-
-    .prayer-name {
-        font-size: 2vw;
-    }
-
-    .prayer-time {
-        font-size: 3vw;
-    }
-
-    .prayer-status {
-        font-size: 1.4vw;
-    }
-
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
-        font-size: 5vw;
-    }
-
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
-        font-size: 10vw;
-    }
-}
-
-/* Landscape Full HD (1920x1080) */
-@media (min-width: 1920px) and (orientation: landscape) {
-    .time-display {
-        font-size: 6vw;
-    }
-
-    .date-display {
-        font-size: 1.2vw;
+    .prayer-item {
+        width: 21%;
     }
 
     .prayer-name {
@@ -433,93 +236,26 @@ body {
     }
 
     .prayer-time {
-        font-size: 2.5vw;
-    }
-
-    .prayer-status {
-        font-size: 1vw;
-    }
-
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
-        font-size: 4vw;
-    }
-
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
-        font-size: 8vw;
+        font-size: 2.6vw;
     }
 }
 
-/* ==================== PORTRAIT MODE ==================== */
-@media (orientation: portrait) {
+/* ==================== SMALL SCREENS (< 800px) ==================== */
+@media screen and (max-width: 799px) {
+    body {
+        padding: 1vh 1vw;
+    }
+
     .card {
-        padding: 3vh 4vw;
-        border-radius: 4vw;
+        padding: 3% 2%;
+        width: 98%;
+        height: 98vh;
     }
 
     .header-section {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 20%;
-        -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
+        height: 15%;
     }
 
-    .time-display {
-        font-size: 12vw;
-    }
-
-    .date-display {
-        font-size: 3vw;
-    }
-
-    .prayer-box {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 calc(50% - 2vw);
-        -ms-flex: 0 0 calc(50% - 2vw);
-        flex: 0 0 calc(50% - 2vw);
-        width: calc(50% - 2vw);
-        min-height: 12vh;
-    }
-
-    .prayer-box.active,
-    .prayer-box.next {
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0 0 100%;
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        width: 100%;
-        min-height: 30vh;
-    }
-
-    .prayer-name {
-        font-size: 4vw;
-    }
-
-    .prayer-time {
-        font-size: 6vw;
-    }
-
-    .prayer-status {
-        font-size: 2.5vw;
-    }
-
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
-        font-size: 8vw;
-    }
-
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
-        font-size: 15vw;
-    }
-}
-
-/* Portrait Tablet 768px+ */
-@media (min-width: 768px) and (orientation: portrait) {
     .time-display {
         font-size: 10vw;
     }
@@ -528,37 +264,34 @@ body {
         font-size: 2.5vw;
     }
 
-    .prayer-name {
-        font-size: 3.5vw;
+    .highlight-section {
+        height: 42%;
     }
 
-    .prayer-time {
-        font-size: 5.5vw;
+    .highlight-box {
+        width: 85%;
     }
 
-    .prayer-status {
-        font-size: 2vw;
+    .highlight-status {
+        font-size: 3vw;
     }
 
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
+    .highlight-name {
         font-size: 7vw;
     }
 
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
+    .highlight-time {
         font-size: 13vw;
     }
-}
 
-/* Portrait Large Tablet 1024px+ */
-@media (min-width: 1024px) and (orientation: portrait) {
-    .time-display {
-        font-size: 8vw;
+    .prayer-list-section {
+        height: 38%;
     }
 
-    .date-display {
-        font-size: 2vw;
+    .prayer-item {
+        width: 22%;
+        margin: 0 1%;
+        padding: 2% 1%;
     }
 
     .prayer-name {
@@ -566,20 +299,6 @@ body {
     }
 
     .prayer-time {
-        font-size: 5vw;
-    }
-
-    .prayer-status {
-        font-size: 1.8vw;
-    }
-
-    .prayer-box.active .prayer-name,
-    .prayer-box.next .prayer-name {
-        font-size: 6vw;
-    }
-
-    .prayer-box.active .prayer-time,
-    .prayer-box.next .prayer-time {
-        font-size: 11vw;
+        font-size: 4.5vw;
     }
 }

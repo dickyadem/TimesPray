@@ -1,5 +1,35 @@
 var prayerTimesData = null;
 
+// Data fallback jika API gagal (Jakarta)
+var fallbackData = {
+    timings: {
+        Fajr: '04:37',
+        Dhuhr: '11:57',
+        Asr: '15:17',
+        Maghrib: '18:02',
+        Isha: '19:12'
+    },
+    date: {
+        readable: '15 Jan 2025',
+        hijri: { day: '15', month: { en: 'Rajab' }, year: '1446' }
+    }
+};
+
+// Console polyfill untuk IE8
+if (typeof console === 'undefined') {
+    window.console = { log: function () { }, error: function () { }, warn: function () { } };
+}
+
+// Helper function untuk IE8 compatibility
+function setText(el, text) {
+    if (!el) return;
+    if ('textContent' in el) {
+        el.textContent = text;
+    } else {
+        el.innerText = text;
+    }
+}
+
 function padLeft(str, length, char) {
     str = String(str);
     while (str.length < length) {
@@ -13,7 +43,7 @@ function updateCurrentTime() {
     var hours = padLeft(now.getHours(), 2, '0');
     var minutes = padLeft(now.getMinutes(), 2, '0');
     var seconds = padLeft(now.getSeconds(), 2, '0');
-    document.getElementById('currentTime').textContent = hours + ':' + minutes + ':' + seconds;
+    setText(document.getElementById('currentTime'), hours + ':' + minutes + ':' + seconds);
 
     if (prayerTimesData) {
         displayAllPrayerTimes();
@@ -23,24 +53,54 @@ function updateCurrentTime() {
 setInterval(updateCurrentTime, 1000);
 updateCurrentTime();
 
+function useFallbackData(reason) {
+    prayerTimesData = fallbackData;
+    var date = fallbackData.date;
+    setText(document.getElementById('dateDisplay'), date.readable + ' - ' + date.hijri.day + ' ' + date.hijri.month.en + ' ' + date.hijri.year + ' H (' + reason + ')');
+    displayAllPrayerTimes();
+}
+
 function getPrayerTimes() {
+    // Cek jika dibuka dari file:// (akan error CORS)
+    if (window.location.protocol === 'file:') {
+        useFallbackData('Offline mode (file://)');
+        return;
+    }
+
     var xhr = new XMLHttpRequest();
-    var url = 'https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11';
+    var url = 'http://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11';
 
     xhr.open('GET', url, true);
+    xhr.timeout = 10000; // 10 detik timeout
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            try {
-                var data = JSON.parse(xhr.responseText);
-                if (data.code === 200) {
-                    prayerTimesData = data.data;
-                    var date = data.data.date;
-                    document.getElementById('dateDisplay').textContent = date.readable + ' • ' + date.hijri.day + ' ' + date.hijri.month.en + ' ' + date.hijri.year + ' H';
-                    displayAllPrayerTimes();
+    xhr.onerror = function () {
+        console.error('Network error');
+        useFallbackData('Offline');
+    };
+
+    xhr.ontimeout = function () {
+        console.error('Request timeout');
+        useFallbackData('Timeout');
+    };
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.code === 200) {
+                        prayerTimesData = data.data;
+                        var date = data.data.date;
+                        setText(document.getElementById('dateDisplay'), date.readable + ' - ' + date.hijri.day + ' ' + date.hijri.month.en + ' ' + date.hijri.year + ' H');
+                        displayAllPrayerTimes();
+                    }
+                } catch (e) {
+                    console.error('Error parsing prayer times:', e);
+                    useFallbackData('Parse error');
                 }
-            } catch (e) {
-                console.error('Error loading prayer times:', e);
+            } else {
+                console.error('API request failed:', xhr.status);
+                useFallbackData('API error');
             }
         }
     };
@@ -53,12 +113,12 @@ function displayAllPrayerTimes() {
     var currentMinutes = now.getHours() * 60 + now.getMinutes();
     var timings = prayerTimesData.timings;
 
-    // Update semua waktu shalat
-    document.getElementById('fajrTime').textContent = timings.Fajr;
-    document.getElementById('dhuhrTime').textContent = timings.Dhuhr;
-    document.getElementById('asrTime').textContent = timings.Asr;
-    document.getElementById('maghribTime').textContent = timings.Maghrib;
-    document.getElementById('ishaTime').textContent = timings.Isha;
+    // Update semua waktu shalat di kotak kecil
+    setText(document.getElementById('fajrTime'), timings.Fajr);
+    setText(document.getElementById('dhuhrTime'), timings.Dhuhr);
+    setText(document.getElementById('asrTime'), timings.Asr);
+    setText(document.getElementById('maghribTime'), timings.Maghrib);
+    setText(document.getElementById('ishaTime'), timings.Isha);
 
     var prayers = [
         { name: 'Subuh', time: timings.Fajr, boxId: 'fajrBox' },
@@ -68,13 +128,11 @@ function displayAllPrayerTimes() {
         { name: 'Isya', time: timings.Isha, boxId: 'ishaBox' }
     ];
 
-    // Reset semua class dan status text
+    // Reset semua class di kotak kecil
     for (var i = 0; i < prayers.length; i++) {
         var box = document.getElementById(prayers[i].boxId);
-        box.className = 'prayer-box';
-        var statusElement = box.querySelector('.prayer-status');
-        if (statusElement) {
-            statusElement.textContent = '';
+        if (box) {
+            box.className = 'prayer-item';
         }
     }
 
@@ -88,24 +146,20 @@ function displayAllPrayerTimes() {
         var prayerMinutes = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
         var endActiveMinutes = prayerMinutes + ACTIVE_DURATION;
 
-        // Cek apakah waktu sekarang dalam range waktu shalat sampai +20 menit
         if (currentMinutes >= prayerMinutes && currentMinutes < endActiveMinutes) {
             activePrayerIndex = i;
             break;
         }
     }
 
-    // Jika ada waktu shalat yang aktif, cari yang berikutnya untuk next
+    // Cari waktu shalat berikutnya
     if (activePrayerIndex !== -1) {
-        // Next adalah waktu shalat setelah yang aktif
         if (activePrayerIndex < prayers.length - 1) {
             nextPrayerIndex = activePrayerIndex + 1;
         } else {
-            // Jika yang aktif adalah Isya, next adalah Subuh besok
             nextPrayerIndex = 0;
         }
     } else {
-        // Jika tidak ada yang aktif, cari waktu shalat berikutnya
         for (var i = 0; i < prayers.length; i++) {
             var parts = prayers[i].time.split(':');
             var prayerMinutes = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
@@ -116,35 +170,45 @@ function displayAllPrayerTimes() {
             }
         }
 
-        // Jika semua waktu sudah lewat (termasuk +20 menit dari Isya), next adalah Subuh besok
         if (nextPrayerIndex === -1) {
             nextPrayerIndex = 0;
         }
     }
 
-    // Set active class untuk waktu shalat yang sedang berlangsung (dalam 20 menit)
-    if (activePrayerIndex !== -1) {
-        var activeBox = document.getElementById(prayers[activePrayerIndex].boxId);
-        activeBox.className = 'prayer-box active';
-        var activeStatus = activeBox.querySelector('.prayer-status');
-        if (activeStatus) {
-            activeStatus.textContent = 'SEDANG BERLANGSUNG';
-        }
-    }
+    // Update kotak besar (highlight box)
+    var highlightBox = document.getElementById('highlightBox');
+    var highlightStatus = document.getElementById('highlightStatus');
+    var highlightName = document.getElementById('highlightName');
+    var highlightTime = document.getElementById('highlightTime');
 
-    // Set next class untuk waktu shalat berikutnya (yang diperbesar)
-    if (nextPrayerIndex !== -1 && activePrayerIndex === -1) {
-        // Hanya tampilkan next jika tidak ada yang active
-        var nextBox = document.getElementById(prayers[nextPrayerIndex].boxId);
-        nextBox.className = 'prayer-box next';
-        var nextStatus = nextBox.querySelector('.prayer-status');
-        if (nextStatus) {
-            nextStatus.textContent = 'BERIKUTNYA';
+    if (activePrayerIndex !== -1) {
+        // Ada shalat yang sedang berlangsung
+        highlightBox.className = 'highlight-box active';
+        setText(highlightStatus, 'SEDANG BERLANGSUNG');
+        setText(highlightName, prayers[activePrayerIndex].name);
+        setText(highlightTime, prayers[activePrayerIndex].time);
+
+        // Tandai di kotak kecil
+        var activeItem = document.getElementById(prayers[activePrayerIndex].boxId);
+        if (activeItem) {
+            activeItem.className = 'prayer-item active';
+        }
+    } else {
+        // Tampilkan shalat berikutnya
+        highlightBox.className = 'highlight-box';
+        setText(highlightStatus, 'BERIKUTNYA');
+        setText(highlightName, prayers[nextPrayerIndex].name);
+        setText(highlightTime, prayers[nextPrayerIndex].time);
+
+        // Tandai di kotak kecil
+        var nextItem = document.getElementById(prayers[nextPrayerIndex].boxId);
+        if (nextItem) {
+            nextItem.className = 'prayer-item next';
         }
     }
 }
 
-setInterval(function() {
+setInterval(function () {
     getPrayerTimes();
 }, 3600000);
 
